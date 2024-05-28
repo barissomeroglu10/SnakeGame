@@ -184,7 +184,7 @@ int main()
         Ciz(); // Oyun alanını çizer.
         Girdi(); // Kullanıcı girdilerini alır.
         Mantik(); // Oyunun mantığını işler.
-        Sleep(200); // 100 milisaniye bekler.
+        Sleep(200); // 200 milisaniye bekler.
     }
     return 0;
 }
