@@ -1,7 +1,8 @@
-﻿#include <iostream>
+#include <iostream>
 #include <conio.h> // _kbhit() ve _getch() fonksiyonları için gereken kütüphaneyi ekler.
 #include <windows.h> // Sleep() fonksiyonu için gereken kütüphaneyi ekler.
 #include <ctime>
+#include <fstream> // Dosya işlemleri için gerekli kütüphane
 
 using namespace std;
 
@@ -9,7 +10,6 @@ using namespace std;
 bool oyunBitti;
 
 // genislik ve yukseklik: Oyun alanının genişliğini ve yüksekliğini belirleyen sabitler.
-// const kullanmamızın nedeni bu değişkenlerin program boyunca değişmeyeceğini belirtmektir.
 const int genislik = 20;
 const int yukseklik = 20;
 
@@ -23,13 +23,31 @@ int kuyrukX[100], kuyrukY[100];
 int kuyrukUzunlugu;
 
 // Yon: Yılanın yönlerini belirlemek için kullanılan bir enum.
-// Enum kullanmamızın nedeni, yönleri daha anlamlı ve okunabilir hale getirmektir.
 enum Yon { DUR = 0, SOL, SAG, YUKARI, ASAGI };
 Yon yon;
 
+// En yüksek puanı dosyadan okuyan fonksiyon.
+int EnYuksekPuaniOku() {
+    ifstream dosya("en_yuksek_puan.txt");
+    int enYuksekPuan = 0;
+    if (dosya.is_open()) {
+        dosya >> enYuksekPuan;
+        dosya.close();
+    }
+    return enYuksekPuan;
+}
+
+// En yüksek puanı dosyaya yazan fonksiyon.
+void EnYuksekPuaniYaz(int puan) {
+    ofstream dosya("en_yuksek_puan.txt");
+    if (dosya.is_open()) {
+        dosya << puan;
+        dosya.close();
+    }
+}
+
 // Kurulum: Oyunun başlangıç ayarlarını yapan fonksiyon.
-void Kurulum()
-{
+void Kurulum() {
     srand(time(0));
     oyunBitti = false; // Oyun başlarken bitmiş değil.
     yon = DUR; // Yılan başlangıçta hareket etmiyor.
@@ -41,8 +59,7 @@ void Kurulum()
 }
 
 // Ciz: Oyun alanını ve yılanı çizen fonksiyon.
-void Ciz()
-{
+void Ciz() {
     system("cls"); // Ekranı temizler.
 
     // Üst duvarı çizer.
@@ -51,10 +68,8 @@ void Ciz()
     cout << endl;
 
     // Oyun alanının içini çizer.
-    for (int i = 0; i < yukseklik; i++)
-    {
-        for (int j = 0; j < genislik; j++)
-        {
+    for (int i = 0; i < yukseklik; i++) {
+        for (int j = 0; j < genislik; j++) {
             if (j == 0)
                 cout << "#"; // Sol duvarı çizer.
 
@@ -62,13 +77,10 @@ void Ciz()
                 cout << "O"; // Yılanın başını çizer.
             else if (i == meyveY && j == meyveX)
                 cout << "+"; // Meyveyi çizer.
-            else
-            {
+            else {
                 bool yazdir = false;
-                for (int k = 0; k < kuyrukUzunlugu; k++)
-                {
-                    if (kuyrukX[k] == j && kuyrukY[k] == i)
-                    {
+                for (int k = 0; k < kuyrukUzunlugu; k++) {
+                    if (kuyrukX[k] == j && kuyrukY[k] == i) {
                         cout << "o"; // Yılanın kuyruğunu çizer.
                         yazdir = true;
                     }
@@ -93,12 +105,9 @@ void Ciz()
 }
 
 // Girdi: Kullanıcıdan gelen girdileri işleyen fonksiyon.
-void Girdi()
-{
-    if (_kbhit()) // Klavyeden bir tuşa basıldığını kontrol eder.
-    {
-        switch (_getch()) // Basılan tuşu alır ve kontrol eder.
-        {
+void Girdi() {
+    if (_kbhit()) { // Klavyeden bir tuşa basıldığını kontrol eder.
+        switch (_getch()) { // Basılan tuşu alır ve kontrol eder.
         case 'a':
             yon = SOL; // 'a' tuşuna basılırsa yılan sola gider.
             break;
@@ -119,16 +128,14 @@ void Girdi()
 }
 
 // Mantik: Oyunun mantığını işleyen fonksiyon.
-void Mantik()
-{
+void Mantik() {
     // Kuyruğu güncellemek için önceki pozisyonları kaydeder.
     int oncekiX = kuyrukX[0];
     int oncekiY = kuyrukY[0];
     int onceki2X, onceki2Y;
     kuyrukX[0] = x;
     kuyrukY[0] = y;
-    for (int i = 1; i < kuyrukUzunlugu; i++)
-    {
+    for (int i = 1; i < kuyrukUzunlugu; i++) {
         onceki2X = kuyrukX[i];
         onceki2Y = kuyrukY[i];
         kuyrukX[i] = oncekiX;
@@ -138,8 +145,7 @@ void Mantik()
     }
 
     // Yönlere göre yılanın hareketini sağlar.
-    switch (yon)
-    {
+    switch (yon) {
     case SOL:
         x--; // Yılan sola gider.
         break;
@@ -166,8 +172,7 @@ void Mantik()
             oyunBitti = true;
 
     // Yılanın meyveyi yediğini kontrol eder.
-    if (x == meyveX && y == meyveY)
-    {
+    if (x == meyveX && y == meyveY) {
         puan += 10; // Puanı artırır.
         meyveX = rand() % genislik; // Yeni meyve konumunu belirler.
         meyveY = rand() % yukseklik; // Yeni meyve konumunu belirler.
@@ -176,9 +181,12 @@ void Mantik()
 }
 
 // Ana fonksiyon
-int main()
-{
+int main() {
+    int enYuksekPuan = EnYuksekPuaniOku();
+    cout << "Mevcut En Yüksek Puan: " << enYuksekPuan << endl;
+
     Kurulum(); // Oyunun başlangıç ayarlarını yapar.
+
     while (!oyunBitti) // Oyun bitene kadar döngü devam eder.
     {
         Ciz(); // Oyun alanını çizer.
@@ -186,6 +194,16 @@ int main()
         Mantik(); // Oyunun mantığını işler.
         Sleep(200); // 200 milisaniye bekler.
     }
+
+    if (puan > enYuksekPuan) {
+        enYuksekPuan = puan;
+        EnYuksekPuaniYaz(enYuksekPuan);
+    }
+
+    cout << "Oyun Bitti! Puanınız: " << puan << endl;
+    cout << "En Yüksek Puan: " << enYuksekPuan << endl;
+
     return 0;
 }
+
 
