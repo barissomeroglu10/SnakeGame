@@ -5,7 +5,7 @@
 // C/C++ da konsoldan girdi almak ve konsola çıktı vermek için kullanılır
 // _kbhit() ve _getch() fonksiyonları için gereken kütüphanedir
 
-#include <windows.h>
+#include <Windows.h>
 // Windows işletim sistemiyle ilgili işlevleri ve yapıları içerir
 // Windows işletim sistemi özelliklerini kullanarak program geliştirmemize olanak sağlar
 // sleep() fonksiyonu için gereken kütüphanedir
