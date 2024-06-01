@@ -48,7 +48,7 @@ sabitleri tanımlamak için kullanılır.
 enum yapısı, bu sabitleri daha anlamlı ve okunabilir hale getirir. Bu, kodun okunabilirliğini ve bakımını kolaylaştırır.
 */
 
-enum Yon {DUR=0, SOL, SAG, YUKARI, ASAGI};
+enum Yon { DUR = 0, SOL, SAG, YUKARI, ASAGI };
 Yon yon;
 // enum kullanmamızın nedeni yönleri daha anlamlı ve okunabilir hale getirmektir
 // Yon: yılanın yönlerini belirlemek için kullanılan enum'dur
@@ -60,7 +60,7 @@ Yon yon;
 int main()
 {
 	int enYuksekPuan = EnYuksekPuaniOku();
-	
+
 	Kurulum(); // Oyunun kurulumunu sağlar
 
 	while (!oyunBitti) // Oyun bitene kadar döngüyü devam ettiren koşullu döngü yapısı
@@ -173,7 +173,7 @@ void Ciz() // Oyun alanını ve yılanı çizen fonksiyondur
 			{
 				bool yazdir = false;
 
-				for (int k = 0; k < kuyrukUzunluğu; k++)
+				for (int k = 0; k < kuyrukUzunlugu; k++)
 				{
 					if (kuyrukX[k] == j && kuyrukY[k] == i)
 					{
@@ -231,7 +231,7 @@ void Girdi()
 		case 'x':
 			oyunBitti = true; // x tuşuna basıldığında oyun biter
 			break;
-		
+
 		}
 	}
 }
@@ -245,7 +245,7 @@ void Mantik() // Oyunun mantığını ayarlayan fonksiyon
 	kuyrukX[0] = x;
 	kuyrukY[0] = y;
 
-	for (int i = 1; i < kuyrukUzunluğu; i++)
+	for (int i = 1; i < kuyrukUzunlugu; i++)
 	{
 		// swap yapılır
 		onceki2X = kuyrukX[i];
@@ -300,7 +300,7 @@ void Mantik() // Oyunun mantığını ayarlayan fonksiyon
 	}
 
 	// Yılanın kuyruğuna çarpıp çarpmadığı kontrol edilir
-	for (int i = 0; i < kuyrukUzunluğu; i++)
+	for (int i = 0; i < kuyrukUzunlugu; i++)
 	{
 		if (kuyrukX[i] == x && kuyrukY[i] == y)
 		{
@@ -316,9 +316,10 @@ void Mantik() // Oyunun mantığını ayarlayan fonksiyon
 		meyveX = rand() % genislik; // Meyvenin yeni konumu rastgele belirlenir (x ekseni için)
 		meyveY = rand() % yukseklik; // Meyvenin yeni konumu rastgele belirlenir (y ekseni için)
 
-		kuyrukUzunluğu++; // Her meyve yenildiğinde yılanın kuyruğu uzatılır
+		kuyrukUzunlugu++; // Her meyve yenildiğinde yılanın kuyruğu uzatılır
 
 	}
 }
+
 
 
