@@ -39,7 +39,7 @@ int x, y, meyveX, meyveY, puan; // Yılanın ve meyvenin kordinatları bu deği�
 
 int kuyrukX[100], kuyrukY[100]; // Yılanın kuyruğunun her bir parçasının kordinatlarını tutan dizilerdir
 
-int kuyrukUzunluğu; // Yılanın kuyruk uzunluğunu tutan değişkendir
+int kuyrukUzunlugu; // Yılanın kuyruk uzunluğunu tutan değişkendir
 
 
 /*
