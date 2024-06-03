@@ -21,7 +21,7 @@ using namespace std;
 // Fonksiyon prototiplerini yazma aşaması
 void Kurulum();
 void Ciz();
-void Girdi();
+void Klavye();
 void Mantik();
 int EnYuksekPuaniOku();
 void EnYuksekPuaniYaz(int);
@@ -32,7 +32,7 @@ bool oyunBitti; // Oyunun bitip bitmediğini kontrol eden değişkendir
 
 // const, constant kelimesinin kısaltmasıdır ve C++ programlama dilinde sabit bir değer tanımlamak için kullanılan bir belirteçtir
 // yani const kullanmamızın nedeni bu değişkenlerin oyun boyunca sabit kalmasını istememizdir
-const int genislik = 20; // Oyun alanının genişliğini belirleyen sabittir
+const int genislik = 30; // Oyun alanının genişliğini belirleyen sabittir
 const int yukseklik = 20; // Oyun alanının yüksekliğini belirleyen sabittir
 
 int x, y, meyveX, meyveY, puan; // Yılanın ve meyvenin kordinatları bu değişkenlerde tutulur, puan değişkeni ise puanı tutar
@@ -88,7 +88,7 @@ int main()
 	{
 		Ciz(); // Oyun alanını çizer
 
-		Girdi(); // Kullanıcıdan girdileri alır
+		Klavye(); // Kullanıcıdan girdileri alır
 
 		Mantik(); // Oyunun oynanma mantığını işler
 
@@ -198,7 +198,7 @@ void Ciz() // Oyun alanını ve yılanı çizen fonksiyondur
 	cout << "Mevcut Puan: " << puan << endl;
 }
 
-void Girdi()
+void Klavye()
 {
 	if (_kbhit()) // Klavyeden bir tuşa basılıp basılmadığını kontrol eder
 	{
