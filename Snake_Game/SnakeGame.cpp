@@ -80,31 +80,39 @@ int main()
 	cout << "Oynamak Istediginiz Oyun Modunu Seciniz: ";
 	cin >> OyunModu;
 
-	int enYuksekPuan = EnYuksekPuaniOku();
-
-	Kurulum(); // Oyunun kurulumunu sağlar
-
-	while (!oyunBitti) // Oyun bitene kadar döngüyü devam ettiren koşullu döngü yapısı
+	if (OyunModu != 1 && OyunModu != 2)
 	{
-		Ciz(); // Oyun alanını çizer
-
-		Klavye(); // Kullanıcıdan girdileri alır
-
-		Mantik(); // Oyunun oynanma mantığını işler
-
-		Sleep(OyunHizi);
-		// Yılanın hareket hızını ayarlar
-		// Belli bir süre boyunca programın çalışmasını duraklatmak için kullanılır
+		cout << "Lutfen Dogru Oyun Modunu Seciniz!" << endl;
 	}
 
-	if (puan > enYuksekPuan)
+	else
 	{
-		enYuksekPuan = puan;
+		int enYuksekPuan = EnYuksekPuaniOku();
 
-		EnYuksekPuaniYaz(enYuksekPuan);
+		Kurulum(); // Oyunun kurulumunu sağlar
+
+		while (!oyunBitti) // Oyun bitene kadar döngüyü devam ettiren koşullu döngü yapısı
+		{
+			Ciz(); // Oyun alanını çizer
+
+			Klavye(); // Kullanıcıdan girdileri alır
+
+			Mantik(); // Oyunun oynanma mantığını işler
+
+			Sleep(OyunHizi);
+			// Yılanın hareket hızını ayarlar
+			// Belli bir süre boyunca programın çalışmasını duraklatmak için kullanılır
+		}
+
+		if (puan > enYuksekPuan)
+		{
+			enYuksekPuan = puan;
+
+			EnYuksekPuaniYaz(enYuksekPuan);
+		}
+
+		cout << "En Yuksek Puan: " << enYuksekPuan << endl;
 	}
-
-	cout << "En Yuksek Puan: " << enYuksekPuan << endl;
 
 	return 0;
 }
@@ -353,5 +361,4 @@ void EnYuksekPuaniYaz(int puan) // Eğer puan değeri en yüksek ise onu ekrana 
 		dosya.close();
 	}
 }
-
 
