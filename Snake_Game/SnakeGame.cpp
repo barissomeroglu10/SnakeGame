@@ -54,11 +54,32 @@ Yon yon;
 // Yon: yılanın yönlerini belirlemek için kullanılan enum'dur
 // yon: bir değişkendir, bu değişken yılanın mevcut yönünü tutar ve yalnızca Yon enum türünden bir değer alabilir
 
+int OyunModu;
+// Kullanıcının oyun modunu tutan değişken
 
 
 
 int main()
 {
+	// Oyun hızını kullanıcı belirler
+	int OyunHizi;
+
+	cout << "Hizli oyun modu icin 50 giriniz\n";
+	cout << "Orta hizli oyun modu icin 120 giriniz\n";
+	cout << "Yavas oyun modu icin 150 giriniz\n\n";
+
+	cout << "Lutfen Oynamak Istedginiz Oyun Hizini Giriniz: ";
+	cin >> OyunHizi;
+
+	system("cls");
+
+	// Kullanıcı oyun modunu belirler
+	cout << "Duvarli Oyun Modu Icin 1 giriniz\n";
+	cout << "Duvarsiz Oyun Modu Icin 2 giriniz\n\n";
+
+	cout << "Oynamak Istediginiz Oyun Modunu Seciniz: ";
+	cin >> OyunModu;
+
 	int enYuksekPuan = EnYuksekPuaniOku();
 
 	Kurulum(); // Oyunun kurulumunu sağlar
@@ -71,7 +92,7 @@ int main()
 
 		Mantik(); // Oyunun oynanma mantığını işler
 
-		Sleep(150);
+		Sleep(OyunHizi);
 		// Yılanın hareket hızını ayarlar
 		// Belli bir süre boyunca programın çalışmasını duraklatmak için kullanılır
 	}
@@ -89,35 +110,6 @@ int main()
 }
 
 
-
-
-int EnYuksekPuaniOku() // En yuksek puanı dosyadan okuyan fonksiyon
-{
-	ifstream dosya("en_yuksek_puan.txt"); // En yüksek puanı tutacak olan bir txt dosyası açılır
-
-	int enYuksekPuan = 0; // Başlangıçta en yuksek puan 0'dır
-
-	if (dosya.is_open())
-	{
-		dosya >> enYuksekPuan; // Dosyadan en yüksek puan okunur
-
-		dosya.close();
-	}
-
-	return enYuksekPuan;
-}
-
-void EnYuksekPuaniYaz(int puan) // Eğer puan değeri en yüksek ise onu ekrana yazar
-{
-	ofstream dosya("en_yuksek_puan.txt");
-
-	if (dosya.is_open())
-	{
-		dosya << puan; // Dosyadan en yüksek puan yazılır
-
-		dosya.close();
-	}
-}
 
 void Kurulum() // Oyunun başlangıç ayarlarını yapar
 {
@@ -213,19 +205,23 @@ void Girdi()
 		switch (_getch()) // Basılan tuşun hangi tuş olduğunu kontrol eder
 		{
 		case 'a':
-			yon = SOL; // a tuşuna basıldığında yılan sola gider
+			if(yon != SAG)
+				yon = SOL; // a tuşuna basıldığında yılan sola gider
 			break;
 
 		case 'd':
-			yon = SAG; // d tuşuna basıldığında yılan sağa gider
+			if(yon != SOL)
+				yon = SAG; // d tuşuna basıldığında yılan sağa gider
 			break;
 
 		case 'w':
-			yon = YUKARI; // w tuşuna basıldığında yılan yukarı gider
+			if(yon != ASAGI)
+				yon = YUKARI; // w tuşuna basıldığında yılan yukarı gider
 			break;
 
 		case 's':
-			yon = ASAGI; // s tuşuna basıldığında yılan aşağı gider
+			if(yon != YUKARI)
+				yon = ASAGI; // s tuşuna basıldığında yılan aşağı gider
 			break;
 
 		case 'x':
@@ -278,25 +274,34 @@ void Mantik() // Oyunun mantığını ayarlayan fonksiyon
 		break;
 	}
 
-	// Yılanın oyun alanında kalmasını ve zıt duvardan çıkmasını sağlar
-	if (x >= genislik)
+	if (OyunModu == 1)
 	{
-		x = 0;
+		if (x >= genislik || x < 0 || y >= yukseklik || y < 0)
+			oyunBitti = true;
 	}
 
-	else if (x < 0)
+	else if (OyunModu == 2)
 	{
-		x = genislik - 1;
-	}
+		// Yılanın oyun alanında kalmasını ve zıt duvardan çıkmasını sağlar
+		if (x >= genislik)
+		{
+			x = 0;
+		}
 
-	if (y >= yukseklik)
-	{
-		y = 0;
-	}
+		else if (x < 0)
+		{
+			x = genislik - 1;
+		}
 
-	else if (y < 0)
-	{
-		y = yukseklik - 1;
+		if (y >= yukseklik)
+		{
+			y = 0;
+		}
+
+		else if (y < 0)
+		{
+			y = yukseklik - 1;
+		}
 	}
 
 	// Yılanın kuyruğuna çarpıp çarpmadığı kontrol edilir
@@ -321,5 +326,32 @@ void Mantik() // Oyunun mantığını ayarlayan fonksiyon
 	}
 }
 
+int EnYuksekPuaniOku() // En yuksek puanı dosyadan okuyan fonksiyon
+{
+	ifstream dosya("en_yuksek_puan.txt"); // En yüksek puanı tutacak olan bir txt dosyası açılır
+
+	int enYuksekPuan = 0; // Başlangıçta en yuksek puan 0'dır
+
+	if (dosya.is_open())
+	{
+		dosya >> enYuksekPuan; // Dosyadan en yüksek puan okunur
+
+		dosya.close();
+	}
+
+	return enYuksekPuan;
+}
+
+void EnYuksekPuaniYaz(int puan) // Eğer puan değeri en yüksek ise onu ekrana yazar
+{
+	ofstream dosya("en_yuksek_puan.txt");
+
+	if (dosya.is_open())
+	{
+		dosya << puan; // Dosyadan en yüksek puan yazılır
+
+		dosya.close();
+	}
+}
 
 
