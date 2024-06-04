@@ -64,20 +64,20 @@ int main()
 	// Oyun hızını kullanıcı belirler
 	int OyunHizi;
 
-	cout << "Hizli oyun modu icin 50 giriniz\n";
-	cout << "Orta hizli oyun modu icin 120 giriniz\n";
-	cout << "Yavas oyun modu icin 150 giriniz\n\n";
+	cout << "-> Hizli oyun modu icin 50 giriniz\n";
+	cout << "-> Orta hizli oyun modu icin 120 giriniz\n";
+	cout << "-> Yavas oyun modu icin 150 giriniz\n\n";
 
-	cout << "Lutfen Oynamak Istedginiz Oyun Hizini Giriniz: ";
+	cout << "-> Lutfen Oynamak Istedginiz Oyun Hizini Giriniz: ";
 	cin >> OyunHizi;
 
 	system("cls");
 
 	// Kullanıcı oyun modunu belirler
-	cout << "Duvarli Oyun Modu Icin 1 giriniz\n";
-	cout << "Duvarsiz Oyun Modu Icin 2 giriniz\n\n";
+	cout << "+ Duvarli Oyun Modu Icin 1 giriniz\n";
+	cout << "+ Duvarsiz Oyun Modu Icin 2 giriniz\n\n";
 
-	cout << "Oynamak Istediginiz Oyun Modunu Seciniz: ";
+	cout << "+ Oynamak Istediginiz Oyun Modunu Seciniz: ";
 	cin >> OyunModu;
 
 	if (OyunModu != 1 && OyunModu != 2)
