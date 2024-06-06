@@ -8,7 +8,7 @@
 #include <Windows.h>
 // Windows işletim sistemiyle ilgili işlevleri ve yapıları içerir
 // Windows işletim sistemi özelliklerini kullanarak program geliştirmemize olanak sağlar
-// sleep() fonksiyonu için gereken kütüphanedir
+// Sleep() fonksiyonu için gereken kütüphanedir
 
 #include <ctime>
 // srand(NULL) fonksiyonu için gereken kütüphanedir
@@ -19,7 +19,7 @@
 using namespace std;
 
 // Fonksiyon prototiplerini yazma aşaması
-void Kurulum();
+void Baslangic();
 void Ciz();
 void Klavye();
 void Mantik();
@@ -59,6 +59,7 @@ int OyunModu;
 
 
 
+
 int main()
 {
 	// Oyun hızını kullanıcı belirler
@@ -89,7 +90,7 @@ int main()
 	{
 		int enYuksekPuan = EnYuksekPuaniOku();
 
-		Kurulum(); // Oyunun kurulumunu sağlar
+		Baslangic(); // Oyunun kurulumunu sağlar
 
 		while (!oyunBitti) // Oyun bitene kadar döngüyü devam ettiren koşullu döngü yapısı
 		{
@@ -118,8 +119,7 @@ int main()
 }
 
 
-
-void Kurulum() // Oyunun başlangıç ayarlarını yapar
+void Baslangic() // Oyunun başlangıç ayarlarını yapar
 {
 	srand(time(NULL));
 
@@ -144,7 +144,7 @@ void Ciz() // Oyun alanını ve yılanı çizen fonksiyondur
 	// Üst duvarı çizen döngü
 	for (int i = 0; i < genislik + 2; i++) // genislik + 2 olmasının nedeni sol ve sağ duvarların da hesaba katılmasıdır 
 	{
-		cout << "#";
+		cout << "_";
 	}
 
 	cout << endl;
@@ -156,7 +156,7 @@ void Ciz() // Oyun alanını ve yılanı çizen fonksiyondur
 		{
 			if (j == 0)
 			{
-				cout << "#"; // Sol duvarı çizer 0-0, 1-0, 2-0, 3-0....18-0, 19-0
+				cout << "|"; // Sol duvarı çizer 0-0, 1-0, 2-0, 3-0....18-0, 19-0
 			}
 
 			if (i == y && j == x)
@@ -171,6 +171,7 @@ void Ciz() // Oyun alanını ve yılanı çizen fonksiyondur
 
 			else
 			{
+				// Bu değişken ile yılanın gövdesinin mevcut konumu takip edilir
 				bool yazdir = false;
 
 				for (int k = 0; k < kuyrukUzunlugu; k++)
@@ -183,12 +184,13 @@ void Ciz() // Oyun alanını ve yılanı çizen fonksiyondur
 					}
 				}
 
+				// Eğer yazdir değişkeni halen false ise bu demektir ki mevcut hücre yılanın kuyruğuna ait değildir
 				if (!yazdir)
 					cout << " "; // Boş alanı çizer
 			}
 
 			if (j == genislik - 1)
-				cout << "#"; // Sağ duvarı çizer 0-19, 1-19, 2-19 ... 18-19
+				cout << "|"; // Sağ duvarı çizer 0-19, 1-19, 2-19 ... 18-19
 		}
 
 		cout << endl;
@@ -197,7 +199,7 @@ void Ciz() // Oyun alanını ve yılanı çizen fonksiyondur
 	// Alt duvarı çizen deyim
 	for (int i = 0; i < genislik + 2; i++) // genislik + 2 olmasının nedeni sol ve sağ duvarların da hesaba katılmasıdır
 	{
-		cout << "#";
+		cout << "-";
 	}
 
 	cout << endl;
@@ -213,23 +215,23 @@ void Klavye()
 		switch (_getch()) // Basılan tuşun hangi tuş olduğunu kontrol eder
 		{
 		case 'a':
-			if(yon != SAG)
-				yon = SOL; // a tuşuna basıldığında yılan sola gider
+			if (yon != SAG)
+				yon = SOL; // a tuşuna basıldığında yılan sola gider. Eğer yılan zaten sağa hareket ediyorsa sola gitmez
 			break;
 
 		case 'd':
-			if(yon != SOL)
-				yon = SAG; // d tuşuna basıldığında yılan sağa gider
+			if (yon != SOL)
+				yon = SAG; // d tuşuna basıldığında yılan sağa gider. Eğer yılan zaten sola hareket ediyorsa sağa gitmez
 			break;
 
 		case 'w':
-			if(yon != ASAGI)
-				yon = YUKARI; // w tuşuna basıldığında yılan yukarı gider
+			if (yon != ASAGI)
+				yon = YUKARI; // w tuşuna basıldığında yılan yukarı gider. Eğer yılan zaten aşağı hareket ediyorsa yukarı gitmez
 			break;
 
 		case 's':
-			if(yon != YUKARI)
-				yon = ASAGI; // s tuşuna basıldığında yılan aşağı gider
+			if (yon != YUKARI)
+				yon = ASAGI; // s tuşuna basıldığında yılan aşağı gider. Eğer yılan zaten yukarı hareket ediyorsa aşağı gitmez
 			break;
 
 		case 'x':
@@ -249,9 +251,10 @@ void Mantik() // Oyunun mantığını ayarlayan fonksiyon
 	kuyrukX[0] = x;
 	kuyrukY[0] = y;
 
+	// Fibonacci mantığı
 	for (int i = 1; i < kuyrukUzunlugu; i++)
 	{
-		// swap yapılır
+		// swap yapılır.her parça önceki parçanın yerine geçer.
 		onceki2X = kuyrukX[i];
 		onceki2Y = kuyrukY[i];
 
@@ -266,24 +269,30 @@ void Mantik() // Oyunun mantığını ayarlayan fonksiyon
 	switch (yon)
 	{
 	case SOL:
-		x--; // Yılan sola gider
+		x--; // Yılan sola gider (10-y,9-y,8-y...)
 		break;
 
 	case SAG:
-		x++; // Yılan sağa gider
+		x++; // Yılan sağa gider (1-y,2-y,3-y...)
 		break;
 
 	case YUKARI:
-		y--; // Yılan yukarı gider
+		y--; // Yılan yukarı gider (x-19,x-18,x-17...)
 		break;
 
 	case ASAGI:
-		y++; // Yılan aşağı gider
+		y++; // Yılan aşağı gider (x-1,x-2,x-3...)
 		break;
 	}
 
+
 	if (OyunModu == 1)
 	{
+		// Eğer yılanın başının x koordinatı oyun alanının genişliğinden büyük veya genişliğe eşitse yani sağ duvarı geçerse
+		// veya yılanın başının x koordinatı sıfırdan küçükse yani sol duvarı geçerse
+		// veya yılanın başının y koordinatı oyun alanının yüksekliğinden büyük veya yüksekliğe eşitse yani alt duvarı geçerse
+		// veya yılanın başının y koordinatı sıfırdan küçükse yani üst duvarı geçerse oyun biter
+
 		if (x >= genislik || x < 0 || y >= yukseklik || y < 0)
 			oyunBitti = true;
 	}
@@ -293,29 +302,29 @@ void Mantik() // Oyunun mantığını ayarlayan fonksiyon
 		// Yılanın oyun alanında kalmasını ve zıt duvardan çıkmasını sağlar
 		if (x >= genislik)
 		{
-			x = 0;
+			x = 0; // Yılan sağ duvara geldiği zaman başının öbür taraftan çıkması için x sıfırlanır
 		}
 
 		else if (x < 0)
 		{
-			x = genislik - 1;
+			x = genislik - 1; // Yılan sol duvara geldiği zaman x = genişliğin bir eksiğine eşit olur
 		}
 
 		if (y >= yukseklik)
 		{
-			y = 0;
+			y = 0; // Yılan alt duvara geldiği zaman başının üstteki duvardan çıkması için y sıfırlanır
 		}
 
 		else if (y < 0)
 		{
-			y = yukseklik - 1;
+			y = yukseklik - 1; // Yılan üst duvara geldiği zaman y = uzunluğun 1 bir eksiğine eşit olur
 		}
 	}
 
 	// Yılanın kuyruğuna çarpıp çarpmadığı kontrol edilir
 	for (int i = 0; i < kuyrukUzunlugu; i++)
 	{
-		if (kuyrukX[i] == x && kuyrukY[i] == y)
+		if (kuyrukX[i] == x && kuyrukY[i] == y) // Yılanın başının koordinatlarının herhangi biri kuyrukla çarpışırsa oyun biter
 		{
 			oyunBitti = true;
 		}
@@ -361,4 +370,3 @@ void EnYuksekPuaniYaz(int puan) // Eğer puan değeri en yüksek ise onu ekrana 
 		dosya.close();
 	}
 }
-
