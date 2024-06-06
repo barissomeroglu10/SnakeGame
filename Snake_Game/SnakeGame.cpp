@@ -62,6 +62,20 @@ int OyunModu;
 
 int main()
 {
+	int abc = 0;
+
+	system("color 9");
+
+	// Yükleme ekranı oluşturma
+	while (abc != 100)
+	{
+		abc++;
+
+		cout << "Oyun Yukleniyor %" << abc;
+
+		system("cls");
+	}
+
 	// Oyun hızını kullanıcı belirler
 	int OyunHizi;
 
